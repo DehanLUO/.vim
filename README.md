@@ -1,16 +1,31 @@
-# Vim configuration primer plus
+# Vim configuration primer plus {ignore=true}
 
 <p align="center">
 To Katherine, with Love.
 </p>
 
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [****Prerequisites****](#prerequisites)
+- [Quick Start](#quick-start)
+- [Shortcuts](#shortcuts)
+  - [Normal, Visual, Select, Operator-pending mode](#normal-visual-select-operator-pending-mode)
+  - [Normal mode](#normal-mode)
+  - [Insert mode](#insert-mode)
+- [Features](#features)
+- [Usage](#usage)
+
+<!-- /code_chunk_output -->
+
 # ****Prerequisites****
 
 - Install nodejs ≥ 12.12 for [Conquer of Completion](https://github.com/neoclide/coc.nvim#quick-start)
 
-```bash
-brew install node
-```
+ ```bash
+ brew install node
+ ```
 
 # Quick Start
 
@@ -34,6 +49,7 @@ brew install node
 | `/`+`/` | Stop the highlighting for a previous search pattern | vim |
 | `\`+`v`+`e` | Edit the initialization commands | vim |
 | `\`+`v`+`r` | Re-source the initialization commands | vim |
+| `r` | Compile | vim |
 
 ## Insert mode
 
@@ -46,3 +62,6 @@ brew install node
 
 - [ ]  IDE for C++
 - [ ]  IDE for LaTeX
+
+# Usage
+- [Markdown guide](./doc/markdown-preview-enhanced.md)

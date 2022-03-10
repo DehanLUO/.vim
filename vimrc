@@ -182,10 +182,12 @@ en
 		Plug 'vim-airline/vim-airline-themes'
 		Plug 'lambdalisue/battery.vim' " Battery integration
 	Plug 'neoclide/coc.nvim',{'branch': 'release'} " Instant increment completion
+	Plug 'iamcco/markdown-preview.vim' " Preview Markdown in real-time
+		Plug 'iamcco/mathjax-support-for-mkdp' " MathJax support
 
 cal plug#end()
 
-" DONE PlugCfg 'vim-airline/vim-airline' :help airline.txt
+" PlugCfg 'vim-airline/vim-airline' :help airline.txt {{{1
 " !:AirlineExtensions Shows the status of all available airline extensions.
 
 " Integrating with powerline fonts
@@ -228,11 +230,43 @@ fu! s:update_highlights()
 endf
 au User AirlineAfterTheme cal s:update_highlights()
 
-" DONE PlugCfg 'vim-airline/vim-airline-themes' :help airline-themes.txt
+" PlugCfg 'vim-airline/vim-airline-themes' :help airline-themes.txt
 let g:airline_theme='powerlineish'
 
-" DONE PlugCfg 'vlambdalisue/battery' :help battery.txt
+" PlugCfg 'vlambdalisue/battery' :help battery.txt
 " Enable battery integration
 " !colums should greater than 99 when airline inits
 let g:airline#extensions#battery#enabled=1
+"}}}
 
+
+" PlugCfg 'neoclide/coc.nvim' :help coc-nvim.txt {{{1
+" !brew install node
+
+" #List the extensions installed
+	" :CocList extensions
+
+" #List all the extensions available
+	" :CocList marketplace
+
+" Waiting for
+" :CocCommand markdown-preview-enhanced.createTOC
+" :CocCommand markdown-preview-enhanced.openImageHelper
+" :CocCommand markdown-preview-enhanced.insertTable
+
+" Install extensions
+let g:coc_global_extensions=[
+			\ 'coc-marketplace',
+			\ 'coc-markdown-preview-enhanced',
+			\ 'coc-webview'
+			\]
+"}}}
+
+" Compile
+nm r :call Compile()<CR>
+func! Compile()
+	exec "w"
+	if &filetype == 'markdown'
+		exec "CocCommand markdown-preview-enhanced.openPreview"
+	en
+endf

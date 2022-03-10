@@ -1,3 +1,8 @@
 {
-	"http.proxy": "http://127.0.0.1:10808"
+	"http.proxy": "http://127.0.0.1:10808",
+	//markdown preview-enhanced
+	"markdown-preview-enhanced.enableExtendedTableSyntax": true,
+	"markdown-preview-enhanced.enableCriticMarkupSyntax": true,
+	"markdown-preview-enhanced.enableScriptExecution": true,
+	"markdown-preview-enhanced.previewTheme": "github-dark.css"
 }
