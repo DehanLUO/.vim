@@ -1,4 +1,4 @@
-# Vim configuration primer plus {ignore=true}
+# Vim configuration primer plus
 
 <p align="center">
 To Katherine, with Love.
@@ -8,13 +8,14 @@ To Katherine, with Love.
 
 <!-- code_chunk_output -->
 
-- [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
-- [Shortcuts](#shortcuts)
-- [Features](#features)
-- [Q&A](#qa)
-  - [Enable italic fonts in iTerms2](#enable-italic-fonts-in-iterms2)
-- [Usage](#usage)
+- [Vim configuration primer plus](#vim-configuration-primer-plus)
+  - [Prerequisites](#prerequisites)
+  - [Quick Start](#quick-start)
+  - [Shortcuts](#shortcuts)
+  - [Features](#features)
+  - [Q&A](#qa)
+    - [Enable italic fonts in iTerms2](#enable-italic-fonts-in-iterms2)
+  - [Usage](#usage)
 
 <!-- /code_chunk_output -->
 
@@ -99,7 +100,7 @@ To Katherine, with Love.
    tic ./cfg/xterm-256color-italic.terminfo
    ```
 
-3. Type `xterm-256color-italic` in `Preferences` > `Profiles` > `Terminal` > `Report Terminal Type:` to active this new term
+3. Type **xterm-256color-italic** in `Preferences` > `Profiles` > `Terminal` > `Report Terminal Type:` to active this new term
 
 ## Usage
 
