@@ -53,7 +53,7 @@ set tenc=utf-8
 set enc=utf-8 " Vimtex required
 
 set bs=2 " Allow <BS>&<Del> working over indent, eol and start
-"set mouse=a " Enable the use of the mouse
+set mouse=a " Enable the use of the mouse
 set ai " Copy indent from current line when starting a new line
 set wmnu " Command-line completion operates in an enhanced mode
 
@@ -181,6 +181,7 @@ en
 	Plug 'vim-airline/vim-airline' " Lean and mean statusline
 		Plug 'vim-airline/vim-airline-themes'
 		Plug 'lambdalisue/battery.vim' " Battery integration
+	Plug 'morhetz/gruvbox' " An easily distinguishable colorscheme
 	Plug 'neoclide/coc.nvim',{'branch': 'release'} " Instant increment completion
 	Plug 'iamcco/markdown-preview.vim' " Preview Markdown in real-time
 		Plug 'iamcco/mathjax-support-for-mkdp' " MathJax support
@@ -239,7 +240,6 @@ let g:airline_theme='powerlineish'
 let g:airline#extensions#battery#enabled=1
 "}}}
 
-
 " PlugCfg 'neoclide/coc.nvim' :help coc-nvim.txt {{{1
 " !brew install node
 
@@ -249,17 +249,196 @@ let g:airline#extensions#battery#enabled=1
 " #List all the extensions available
 	" :CocList marketplace
 
-" Waiting for
+set hid " TextEdit might fail if hidden is not set
+set ch=2 " Number of screen lines to use for displaying messages
+set ut=100 " Write swap file when many ms nothing is typed
+set shm+=c " Don't pass messages to ins-completion-menu
+set scl=number " Always show the signcolumn
+
+" Enable coc integration on airline
+let g:airline#extensions#coc#enabled=1
+" Change error symbol
+let airline#extensions#coc#error_symbol='E:'
+" Change warning symbol
+let airline#extensions#coc#warning_symbol='W:'
+" Change error format
+let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
+" Change warning format
+let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
+
+" `<Tab>`/`<S-Tab> for trigger completion with characters ahead and navigate
+ino <silent><expr> <Tab>
+	\ pumvisible()?"\<C-n>" :
+	\ <SID>check_back_space()?"\<Tab>" :
+	\ coc#refresh()
+ino <expr><S-Tab> pumvisible()?"\<C-p>":"\<C-h>"
+fu! s:check_back_space() abort
+	let col = col('.') - 1
+	retu !col || getline('.')[col - 1] =~# '\s'
+endf
+
+" `<c-space>` to trigger completion
+ino <silent><expr> <C-@> coc#refresh()
+
+" `<CR>` auto complete after a completion is confirmed
+ino <silent><expr> <cr> complete_info()["selected"]!="-1"
+	\? coc#_select_confirm():"\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nm <silent> [g <Plug>(coc-diagnostic-prev)
+nm <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nm <silent> gd <Plug>(coc-definition)
+nm <silent> gy <Plug>(coc-type-definition)
+nm <silent> gi <Plug>(coc-implementation)
+nm <silent> gr <Plug>(coc-references)
+
+" Symbol renaming.
+nm <Leader>rn <Plug>(coc-rename)
+
+" Applying codeAction to the current buffer
+nm <Leader>ac <Plug>(coc-codeaction)
+
+" Apply AutoFix to problem on the current line
+nm <Leader>qf <Plug>(coc-fix-current)
+
+" Run the Code Lens action on the current line
+nm <Leader>cl <Plug>(coc-codelens-action)
+
+" Formatting selected range
+xm <Leader>f <Plug>(coc-format-selected)
+nm <Leader>f <Plug>(coc-format-selected)
+
+" Applying codeAction to the selected region
+" !`\aap` for current paragraph
+xm <Leader>a <Plug>(coc-codeaction-selected)
+nm <Leader>a <Plug>(coc-codeaction-selected)
+
+" Map function and class text objects
+xm if <Plug>(coc-funcobj-i)
+om if <Plug>(coc-funcobj-i)
+xm af <Plug>(coc-funcobj-a)
+om af <Plug>(coc-funcobj-a)
+xm ic <Plug>(coc-classobj-i)
+om ic <Plug>(coc-classobj-i)
+xm ac <Plug>(coc-classobj-a)
+om ac <Plug>(coc-classobj-a)
+
+" Scroll float windows/popups.
+nn <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nn <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+ino <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+ino <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+vn <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+vn <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+
+" Select ranges.
+nm <silent><C-s> <Plug>(coc-range-select)
+xm <silent><C-s> <Plug>(coc-range-select)
+
+" Mappings for CoCList
+" Show all diagnostics for the workspace
+nn <silent><nowait> <space>a :<C-u>CocList diagnostics<cr>
+" Manage coc extensions
+nn <silent><nowait> <space>e :<C-u>CocList extensions<cr>
+" Show coc extension marketplace
+nn <silent><nowait> <space>m :<C-u>CocList marketplace<cr>
+" Show all workspace commands
+nn <silent><nowait> <space>c :<C-u>CocList commands<cr>
+" Show symbols in the current document
+nn <silent><nowait> <space>o :<C-u>CocList outline<cr>
+" Search workspace symbols
+nn <silent><nowait> <space>s :<C-u>CocList -I symbols<cr>
+" Invoke default action for pevious/next item in the last open list
+nn <silent><nowait> <space>j :<C-u>CocNext<CR>
+nn <silent><nowait> <space>k :<C-u>CocPrev<CR>
+" Reopen last open list, inpu and cursor position
+nn <silent><nowait> <space>p :<C-u>CocListResume<CR>
+
+" Show documentation in preview window
+nn <silent> K :cal <SID>show_documentation()<CR>
+fu! s:show_documentation()
+	if (index(['vim','help'], &filetype) >= 0)
+		exe 'h '.expand('<cword>')
+	elsei (coc#rpc#ready())
+		cal CocActionAsync('doHover')
+	el
+		exe '!' . &keywordprg . " " . expand('<cword>')
+	en
+endf
+
+" Highlight the symbol and its references when holding the cursor
+au CursorHold * sil cal CocActionAsync('highlight')
+
+" Add `:Format` command to format current buffer.
+com! -nargs=0 Format :call CocActionAsync('format')
+
+" Add `:Fold` command to fold current buffer.
+com! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+com! -nargs=0 OR :call CocActionAsync('runCommand', 'editor.action.organizeImport')
+
+" Waiting_for
+" coc-markdown-preview-enhanced {{{2
 " :CocCommand markdown-preview-enhanced.createTOC
 " :CocCommand markdown-preview-enhanced.openImageHelper
 " :CocCommand markdown-preview-enhanced.insertTable
+"}}}
+
+" coc-vimlsp {{{2
+" document highlight
+let g:markdown_fenced_languages = [
+	\ 'vim',
+	\ 'help'
+	\]
+"}}}
+
+" coc-pairs {{{2
+" To disable characters for a specified filetypes
+au FileType markdown let b:coc_pairs_disabled = ['`']
+au FileType vim let b:coc_pairs_disabled = ['"']
+"}}}
+
+" coc-highlight {{{2
+" Uses highlight-guifg and highlight=guibg attributes in the terminal
+if has('termguicolors')
+	let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+	let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+	set tgc
+
+	nm <Leader>pc :call CocAction('pickColor')<CR>
+en
+"}}}
 
 " Install extensions
 let g:coc_global_extensions=[
-			\ 'coc-marketplace',
-			\ 'coc-markdown-preview-enhanced',
-			\ 'coc-webview'
-			\]
+	\ 'coc-marketplace',
+	\ 'coc-markdownlint', 'coc-markdown-preview-enhanced', 'coc-webview',
+	\ 'coc-vimlsp',
+	\ 'coc-json',
+	\ 'coc-highlight', 'coc-prettier', 'coc-pairs'
+	\]
+"}}}
+
+" PlugCfg 'vmorhetz/gruvbox' {{{1
+let g:gruvbox_bold=1 " Enable bold text
+let g:gruvbox_contrast_dark="hard" " Change dark mode contrast
+let g:gruvbox_contrast_light="medium" " Change light mode contrast
+let g:gruvbox_italic=1 " Enable italic text
+let g:gruvbox_italicize_comments=1 " Enable italic for comments
+let g:gruvbox_termcolors=256 " Uses 256-color palette
+let g:gruvbox_transparent_bg=1 " Enable transparent background
+let g:gruvbox_undercurl=1 " Enable undercurled text
+let g:gruvbox_underline=1 " Enable underlined text
+
+colo gruvbox
+
+" Remove background color set by colorscheme, and to make opacity 
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 "}}}
 
 " Compile
