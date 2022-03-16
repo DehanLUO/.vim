@@ -225,11 +225,10 @@ let g:airline_mode_map = {
 let g:airline_stl_path_style='short'
 
 " Update highlights without affecting the airline theme
-fu! s:update_highlights()
-	hi CursorLine ctermbg=none guibg=NONE
-	hi VertSplit ctermbg=none guibg=NONE
+fu! s:update_highlights_for_Airline()
+	hi VertSplit ctermbg=NONE guibg=NONE
 endf
-au User AirlineAfterTheme cal s:update_highlights()
+au User AirlineAfterTheme cal s:update_highlights_for_Airline()
 
 " PlugCfg 'vim-airline/vim-airline-themes' :help airline-themes.txt
 let g:airline_theme='powerlineish'
@@ -430,15 +429,19 @@ let g:gruvbox_contrast_light="medium" " Change light mode contrast
 let g:gruvbox_italic=1 " Enable italic text
 let g:gruvbox_italicize_comments=1 " Enable italic for comments
 let g:gruvbox_termcolors=256 " Uses 256-color palette
-let g:gruvbox_transparent_bg=1 " Enable transparent background
 let g:gruvbox_undercurl=1 " Enable undercurled text
 let g:gruvbox_underline=1 " Enable underlined text
 
+" Remove background color set by colorscheme, and to make opacity
+fu! s:make_opacity_for_colorscheme()
+	hi Normal ctermbg=NONE guibg=NONE
+	hi NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+endf
+au ColorScheme cal s:make_opacity_for_colorscheme()
+
 colo gruvbox
 
-" Remove background color set by colorscheme, and to make opacity 
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+cal s:make_opacity_for_colorscheme() 
 "}}}
 
 " Compile
