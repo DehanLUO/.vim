@@ -101,9 +101,10 @@ nn <Leader>ve :e $MYVIMRC<CR>
 " Source the .vimrc file
 nn <Leader>vr :so $MYVIMRC<CR>
 " Automatic source the .vimrc file after writing the file
+"  except writing executed by Gqk(), or one or more warnings occur
 aug VimReload
 	au!
-	au BufWritePost $MYVIMRC so $MYVIMRC
+	au BufWritePost $MYVIMRC if get(s:,'GqkNotRunning',1)|so $MYVIMRC|en
 aug END
 
 if has('gui_macvim')&&has('gui_running')
@@ -190,6 +191,7 @@ en
 		Plug 'lambdalisue/battery.vim' " Battery integration
 	Plug 'morhetz/gruvbox' " An easily distinguishable colorscheme
 	Plug 'neoclide/coc.nvim',{'branch': 'release'} " Instant increment completion
+	Plug 'airblade/vim-rooter' " Change the working directory to the project root
 	Plug 'airblade/vim-gitgutter' " Show git status
 
 cal plug#end()
@@ -506,11 +508,29 @@ nm <Leader>ghp :GitGutterPreviewHunk<CR>
 " Fold/execute unchanged lines
 nm <Leader>gf :GitGutterFold<CR>
 
-let g:gitgutter_use_location_list=1 " Hunks to the window's location list
-" Load all SAVED hunks into window's/quickfix list
-com! Gqf GitGutterQuickFix |cope
-" Does not work https://github.com/airblade/vim-gitgutter/issues/822
-nm <Leader>gqf :Gqf<CR>
+" GitGutterQuickFix goes wrong if working directory is not at the repo root
+"  https://github.com/airblade/vim-gitgutter/issues/822#issuecomment-1072314736
+nm <silent><Leader>gqf :call Gqf()<CR>
+func! Gqf()
+	let s:GqkNotRunning=0
+	exec "w"
+	if g:gitgutter_use_location_list
+		" Populates the location list of current windows
+		exec "GitGutterQuickFix\|lope"
+	el
+		" Load all SAVED hunks into global quickfix list
+		exec "GitGutterQuickFix\|cope"
+	en
+	let s:GqkNotRunning=1
+endf
+" Automatically close the GitGutterQuickFix window when leaving
+aug GqfClose
+	au!
+	au WinEnter * if winnr('$') == 1
+		\&& (&buftype == "quickfix" || &buftype == "location")
+		\| q
+		\| en
+aug END
 
 " Next/Previous hunk cycle through hunks in current buffer
 nm <silent> gj :call GitGutterNextHunkCycle()<CR>
