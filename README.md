@@ -42,6 +42,7 @@ To Katherine, with Love.
 | `/`+`/`                 | Stop the highlighting for a previous search pattern                                   |      vim      |  √   |  -  |  -  |  -  |  -  |
 | `\`+`v`+`e`             | Edit the initialization commands                                                      |      vim      |  √   |  -  |  -  |  -  |  -  |
 | `\`+`v`+`r`             | Re-source the initialization commands                                                 |      vim      |  √   |  -  |  -  |  -  |  -  |
+| `Command`+`x`/`c`       | Cut/Copy from MacVim to system clipboard                                              |      vim      |  -   |  -  |  √  |  -  |  -  |
 | `r`                     | Compile                                                                               |      vim      |  √   |  -  |  -  |  -  |  -  |
 | `Ctrl`+`u`              | Delete the text you’ve typed in the current line                                      |      vim      |  -   |  -  |  -  |  -  |  √  |
 | `Ctrl`+`w`              | Delete the word before the cursor                                                     |      vim      |  -   |  -  |  -  |  -  |  √  |
@@ -70,6 +71,9 @@ To Katherine, with Love.
 | `Space`+`o`             | Show symbols in the current document                                                  |      coc      |  √   |  -  |  -  |  -  |  -  |
 | `Space`+`s`             | Search workspace symbols                                                              |      coc      |  √   |  -  |  -  |  -  |  -  |
 | `\`+`p`+`c`             | Pick a different color for current document symbol                                    | coc-highlight |  √   |  -  |  -  |  -  |  -  |
+| `\`+`g`+`h`+`s`/`u`/`p` | Stage/Undo/Preview the hunk the cursor is in                                          | vim-gitgutter |  √   |  -  |  -  |  -  |  -  |
+| `\`+`g`+`f`             | Fold all unchanged lines. Excute again to undo                                        | vim-gitgutter |  √   |  -  |  -  |  -  |  -  |
+| `\`+`g`+`q`+`f`         | Load all hunks into the quickfix list                                                 | vim-gitgutter |  √   |  -  |  -  |  -  |  -  |
 | Key combination         | Action                                                                                |    Source     | Norm | Sel | Vis | Opr | Ins |
 
 ## Features

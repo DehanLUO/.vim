@@ -18,11 +18,11 @@
 "                    ⢫⣧⣄ \ \/ | |  \/  | () / (__`        ⢠⣯⣇⣆
 "                    ⢀⣮⢋⣧⢀\__/|_|_|\/|_|_|\_\____)        ⢪⣏⣇⢇⠀      Author:@Han
 
-" General settings
+" General settings {{{1
 set nocp " Set all options to the Vim defaults
 filet plugin on " Filetype detection:on plugin:on indent:unchanged
 filet indent off " Filetype detection:unchanged plugin:unchanged indent:off
-set grepprg=grep\ -nH\ $* " Make :grep also work well with a single file
+set gp=grep\ -nH\ $* " Make :grep also work well with a single file
 set ml " Check for the set commands at the end  of the file
 
 " Undo
@@ -53,7 +53,7 @@ set tenc=utf-8
 set enc=utf-8 " Vimtex required
 
 set bs=2 " Allow <BS>&<Del> working over indent, eol and start
-set mouse=a " Enable the use of the mouse
+"set mouse=a " Enable the use of the mouse
 set ai " Copy indent from current line when starting a new line
 set wmnu " Command-line completion operates in an enhanced mode
 
@@ -62,7 +62,7 @@ set ic " Ignore case in search patterns
 set hls " Highlight all search pattern matches
 set is " Highlight search pattern as it was typed so far
 " Stop the highlighting for the 'hlsearch' option
-nn // :nohlsearch<CR>
+nn // :noh<CR>
 
 " Put the new window left/bottom/top/right of the current one
 map sh :set nospr<CR>:vs<CR>
@@ -106,6 +106,12 @@ aug VimReload
 	au BufWritePost $MYVIMRC so $MYVIMRC
 aug END
 
+if has('gui_macvim')&&has('gui_running')
+	" Yank from gVim to system clipboard
+	xm <D-x> "*dd
+	xm <D-c> "*y
+en
+
 " Restore cursor
 " @https://vimhelp.org/usr_05.txt.html#last-position-jump
 au BufReadPost *
@@ -142,11 +148,11 @@ set tf " Indicates a fast termianl connection
 set list
 set lcs=tab:>-,trail:- " Strings to use in 'list' mode
 
-" Set fonts and colorschemes for gVim on Windows
+" Set fonts for gVim
 if has('win32')&&has('gui_running')
-	" ?has('fonts')&&has('colorschemes')?
-	set gfn=Hack_Nerd_Font_Mono:h11:cANSI:qDRAFT " Set fonts and font-sizes
-	colo evening " Set color scheme to 'evening'
+	set gfn=Hack_Nerd_Font_Mono:h11:cANSI:qDRAFT
+elsei has('gui_running')&&has('gui_macvim')
+	set gfn=Hack\ Nerd\ Font\ Mono:h12
 en
 
 " Plugins settings
@@ -170,6 +176,7 @@ en
 au VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 	\| PlugInstall --sync | so $MYVIMRC
 	\| en
+"}}}
 
 " Plugins package manager
 if has('unix')
@@ -183,8 +190,7 @@ en
 		Plug 'lambdalisue/battery.vim' " Battery integration
 	Plug 'morhetz/gruvbox' " An easily distinguishable colorscheme
 	Plug 'neoclide/coc.nvim',{'branch': 'release'} " Instant increment completion
-	Plug 'iamcco/markdown-preview.vim' " Preview Markdown in real-time
-		Plug 'iamcco/mathjax-support-for-mkdp' " MathJax support
+	Plug 'airblade/vim-gitgutter' " Show git status
 
 cal plug#end()
 
@@ -252,7 +258,6 @@ set hid " TextEdit might fail if hidden is not set
 set ch=2 " Number of screen lines to use for displaying messages
 set ut=100 " Write swap file when many ms nothing is typed
 set shm+=c " Don't pass messages to ins-completion-menu
-set scl=number " Always show the signcolumn
 
 " Enable coc integration on airline
 let g:airline#extensions#coc#enabled=1
@@ -432,17 +437,101 @@ let g:gruvbox_termcolors=256 " Uses 256-color palette
 let g:gruvbox_undercurl=1 " Enable undercurled text
 let g:gruvbox_underline=1 " Enable underlined text
 
-" Remove background color set by colorscheme, and to make opacity
-fu! s:make_opacity_for_colorscheme()
-	hi Normal ctermbg=NONE guibg=NONE
-	hi NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
-endf
-au ColorScheme cal s:make_opacity_for_colorscheme()
+if has("gui_running")
+	set transp=10 " Transparency of the window background
+	set blur=0 " A blur effect to the window background
+	
+	set bg=dark " Set dark background for gruvbox
+	colo gruvbox " A human-readable colorscheme
+el
+	" Remove background color set by colorscheme
+	fu! s:remove_background_for_colorscheme()
+		hi Normal ctermbg=NONE guibg=NONE
+		hi NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+	endf
+	au ColorScheme cal s:remove_background_for_colorscheme()
 
-colo gruvbox
+	colo gruvbox
 
-cal s:make_opacity_for_colorscheme() 
+	cal s:remove_background_for_colorscheme()
+en
 "}}}
+
+" PlugCfg 'airblade/vim-gitgutter' :help gitgutter.txt {{{1
+let g:gitgutter_map_keys=0 " Clear all gitgutter mappings
+
+set scl=yes " Always draw the signcolumn
+let g:gitgutter_signs=1 " Show signs
+" Customise the symbols
+let g:gitgutter_sign_added=''
+let g:gitgutter_sign_modified='שׂ'
+let g:gitgutter_sign_modified_removed=''
+let g:gitgutter_sign_removed=''
+let g:gitgutter_sign_removed_above_and_below=''
+let g:gitgutter_sign_removed_first_line=''
+" Sync LineNr background color
+hi! link SignColumn LineNr
+hi! link GitGutterAdd LineNr
+hi! link GitGutterChange LineNr
+hi! link GitGutterDelete LineNr
+hi! link GitGUtterChangeDelete LineNr
+" Give the foreground color to GitGutter_Sign
+hi GitGutterAdd guifg=#009900 ctermfg=Green
+hi GitGutterChange guifg=#bbbb00 ctermfg=Yellow
+hi GitGutterDelete guifg=#ff2222 ctermfg=Red
+hi GitGUtterChangeDelete guifg=#ff2222 ctermfg=Red
+
+if has('gui_running')
+	let g:gitgutter_highlight_lines=1 " Enable line highlighting
+
+	" Give the background color to GitGutter_Line
+	hi GitGutterAddline guibg=#013220 ctermbg=NONE
+	hi GitGutterChangeline guibg=#53480d ctermbg=NONE
+	hi GitGutterDeleteline guibg=#430805 ctermbg=NONE
+en
+
+" Get a list of counts of added, modified, and removed lines
+let g:airline#extensions#hunks#enabled=1 " Showing a summary of changed hunks
+let g:airline#extensions#hunks#non_zero_only=0 " Showing all hunks
+let g:airline#extensions#hunks#hunk_symbols=['','שׂ',''] " Set count symbols
+
+" Augment folded text with an indicator of weather lines have been changed
+set fdt=gitgutter#fold#foldtext()
+
+"Stage/undo/preview the hunk
+nm <Leader>ghs :GitGutterStageHunk<CR>
+nm <Leader>ghu :GitGutterUndoHunk<CR>
+nm <Leader>ghp :GitGutterPreviewHunk<CR>
+
+" Fold/execute unchanged lines
+nm <Leader>gf :GitGutterFold<CR>
+
+let g:gitgutter_use_location_list=1 " Hunks to the window's location list
+" Load all SAVED hunks into window's/quickfix list
+com! Gqf GitGutterQuickFix |cope
+" Does not work https://github.com/airblade/vim-gitgutter/issues/822
+nm <Leader>gqf :Gqf<CR>
+
+" Next/Previous hunk cycle through hunks in current buffer
+nm <silent> gj :call GitGutterNextHunkCycle()<CR>
+nm <silent> gk :call GitGutterPrevHunkCycle()<CR>
+fu! GitGutterNextHunkCycle()
+	let line = line('.')
+	sil! GitGutterNextHunk
+	if line('.') == line
+		1
+		GitGutterNextHunk
+	en
+endf
+fu! GitGutterPrevHunkCycle()
+	let line = line('.')
+	sil! GitGutterPrevHunk
+	if line('.') == line
+		norm! G
+		GitGutterPrevHunk
+	en
+endf
+" }}}
 
 " Compile
 nm r :call Compile()<CR>
@@ -452,3 +541,4 @@ func! Compile()
 		exec "CocCommand markdown-preview-enhanced.openPreview"
 	en
 endf
+
