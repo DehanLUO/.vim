@@ -101,11 +101,20 @@ nn <Leader>ve :e $MYVIMRC<CR>
 " Source the .vimrc file
 nn <Leader>vr :so $MYVIMRC<CR>
 " Automatic source the .vimrc file after writing the file
-"  except writing executed by Gqk(), or one or more warnings occur
+"  except writing executed by functions like Gqk(), or warnings occur
 aug VimReload
 	au!
-	au BufWritePost $MYVIMRC if get(s:,'GqkNotRunning',1)|so $MYVIMRC|en
+	au BufWritePost $MYVIMRC if get(s:,'FuncNotRunning',1)|so $MYVIMRC|en
 aug END
+
+" Strip trailing whitespacee
+xm <Leader>stw :s/\s\+$//e<CR>e
+
+" Emulate shift left/right key commands from MacOS Notes
+nm <D-[> <<
+nm <D-]> >>
+vm <D-[> <gv
+vm <D-]> >gv
 
 if has('gui_macvim')&&has('gui_running')
 	" Yank from gVim to system clipboard
@@ -147,7 +156,7 @@ set tf " Indicates a fast termianl connection
 
 " Show <Tab>, useful to see the difference between tabs and spaces
 set list
-set lcs=tab:>-,trail:- " Strings to use in 'list' mode
+set lcs=tab:>-,trail:-,nbsp:%,eol:< " Strings to use in 'list' mode
 
 " Set fonts for gVim
 if has('win32')&&has('gui_running')
@@ -168,7 +177,7 @@ if has('unix') " For unix system
 	en
 elsei has('win32') "For windows system
 	if empty(glob('$HOME/vimfiles/autoload/plug.vim'))
-		sil !curl -fLo \%HOMEPATH\%/vimfiles/autoload/plug.vim --create-dirs 
+		sil !curl -fLo \%HOMEPATH\%/vimfiles/autoload/plug.vim --create-dirs
 			\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	en
 en
@@ -191,8 +200,9 @@ en
 		Plug 'lambdalisue/battery.vim' " Battery integration
 	Plug 'morhetz/gruvbox' " An easily distinguishable colorscheme
 	Plug 'neoclide/coc.nvim',{'branch': 'release'} " Instant increment completion
-	Plug 'airblade/vim-rooter' " Change the working directory to the project root
 	Plug 'airblade/vim-gitgutter' " Show git status
+	Plug 'tpope/vim-fugitive' " Show git status
+		Plug 'tpope/vim-rhubarb' " :GBrowse handler
 
 cal plug#end()
 
@@ -442,7 +452,7 @@ let g:gruvbox_underline=1 " Enable underlined text
 if has("gui_running")
 	set transp=10 " Transparency of the window background
 	set blur=0 " A blur effect to the window background
-	
+
 	set bg=dark " Set dark background for gruvbox
 	colo gruvbox " A human-readable colorscheme
 el
@@ -510,9 +520,12 @@ nm <Leader>gf :GitGutterFold<CR>
 
 " GitGutterQuickFix goes wrong if working directory is not at the repo root
 "  https://github.com/airblade/vim-gitgutter/issues/822#issuecomment-1072314736
+set acd
+" Use location list instead of global quickfix list
+let g:gitgutter_use_location_list=1
 nm <silent><Leader>gqf :call Gqf()<CR>
 func! Gqf()
-	let s:GqkNotRunning=0
+	let s:FuncNotRunning=0
 	exec "w"
 	if g:gitgutter_use_location_list
 		" Populates the location list of current windows
@@ -521,7 +534,7 @@ func! Gqf()
 		" Load all SAVED hunks into global quickfix list
 		exec "GitGutterQuickFix\|cope"
 	en
-	let s:GqkNotRunning=1
+	let s:FuncNotRunning=1
 endf
 " Automatically close the GitGutterQuickFix window when leaving
 aug GqfClose
@@ -556,9 +569,11 @@ endf
 " Compile
 nm r :call Compile()<CR>
 func! Compile()
+	let s:FuncNotRunning=0
 	exec "w"
 	if &filetype == 'markdown'
 		exec "CocCommand markdown-preview-enhanced.openPreview"
 	en
+	let s:FuncNotRunning=1
 endf
 
