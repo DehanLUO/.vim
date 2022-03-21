@@ -34,12 +34,14 @@
 | git status | :Git!       | Open an interactive fugitive-summary buffer showing the status of the files in your working directory |
 | git diff % | :Gdiffsplit | Split the window and allow you to compare the working copy with branch and index                      |
 
-### fugitive-staging maps
+### fugitive buffer maps
 
-| map | action                                      |
-| :-: | ------------------------------------------- |
-| `-` | Stage or unstage the file under the cursor  |
-| `C` | Open the commit containing the current file |
+|     map     | action                                      |
+| :---------: | ------------------------------------------- |
+|     `-`     | Stage or unstage the file under the cursor  |
+|     `C`     | Open the commit containing the current file |
+|   `c`+`c`   | Create a commit                             |
+| `c`+`r`+`c` | Revert the commit under the cursor          |
 
 ### Gdiffsplit maps
 
