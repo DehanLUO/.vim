@@ -7,10 +7,11 @@
 - [Fugitive.vim cheat sheet](#fugitivevim-cheat-sheet)
   - [General commands](#general-commands)
   - [Working with the git index](#working-with-the-git-index)
-    - [fugitive-staging maps](#fugitive-staging-maps)
+    - [fugitive status buffer maps](#fugitive-status-buffer-maps)
     - [Gdiffsplit maps](#gdiffsplit-maps)
   - [Resolving merge conflicts with vimdiff](#resolving-merge-conflicts-with-vimdiff)
   - [Browsing the gii object database](#browsing-the-gii-object-database)
+  - [Exploring the history of a git repository](#exploring-the-history-of-a-git-repository)
 
 <!-- /code_chunk_output -->
 
@@ -34,12 +35,18 @@
 | git status | :Git!       | Open an interactive fugitive-summary buffer showing the status of the files in your working directory |
 | git diff % | :Gdiffsplit | Split the window and allow you to compare the working copy with branch and index                      |
 
-### fugitive-staging maps
+### fugitive status buffer maps
 
-| map | action                                      |
-| :-: | ------------------------------------------- |
-| `-` | Stage or unstage the file under the cursor  |
-| `C` | Open the commit containing the current file |
+|       map       | action                                      |
+| :-------------: | ------------------------------------------- |
+|       `-`       | Stage or unstage the file under the cursor  |
+|       `C`       | Open the commit containing the current file |
+|     `c`+`c`     | Create a commit                             |
+|   `c`+`r`+`c`   | Revert the commit under the cursor          |
+| `c`+`b`+`Space` | Populate command line with ":Git branch"    |
+| `c`+`o`+`Space` | Populate command line with ":Git checkout"  |
+| `c`+`m`+`Space` | Populate command line with ":Git merge"     |
+|     `g`+`q`     | Quit the status buffer                      |
 
 ### Gdiffsplit maps
 
@@ -72,3 +79,7 @@
 | :Gvsplit [BranchName:path/to/file] | Split vertically, and show the file at the specific branch   |
 
 ## Exploring the history of a git repository
+
+|      map/command       | action                                                            |
+| :--------------------: | ----------------------------------------------------------------- |
+| :Ggrep [args] \| copen | Search the working tree for [args] and populate the quickfix list |
