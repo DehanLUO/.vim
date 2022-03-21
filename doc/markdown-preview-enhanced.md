@@ -1,49 +1,47 @@
+# Markdown-preview-enhanced cheat sheet
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=3 orderedList=false} -->
 
 <!-- code_chunk_output -->
 
-- [Syntax guide](#syntax-guide)
-  - [Headers](#headers)
-  - [Emphasis](#emphasis)
-  - [List](#list)
-    - [Unordered List](#unordered-list)
-    - [Ordered List](#ordered-list)
-  - [Images](#images)
-  - [Links](#links)
-  - [Blockquote](#blockquote)
-  - [Horizontal Rule](#horizontal-rule)
-  - [Inline code](#inline-code)
-  - [Fenced code block](#fenced-code-block)
-    - [Syntax Highlighting](#syntax-highlighting)
-    - [Code block class (MPE extended feature)](#code-block-class-mpe-extended-feature)
-    - [highlighting rows](#highlighting-rows)
-  - [Task lists](#task-lists)
-  - [Tables](#tables)
-- [Extended syntax](#extended-syntax)
-  - [Table](#table)
-    - [Colspan `>` or `empty cell`](#colspan-or-empty-cell)
-- [Rowspan `^`](#rowspan)
-  - [Emoji & Font-Awesome](#emoji-font-awesome)
-  - [Superscript](#superscript)
-  - [Subscript](#subscript)
-  - [Footnotes](#footnotes)
-  - [Abbreviation](#abbreviation)
-  - [Mark](#mark)
-  - [CriticMarkup](#criticmarkup)
-  - [Admonition](#admonition)
-- [Math](#math)
-- [Diagrams](#diagramshttpsshd101wyygithubiomarkdown-preview-enhanceddiagrams)
-- [Table of Contents](#table-of-contents)
-- [File Imports](#file-importshttpsshd101wyygithubiomarkdown-preview-enhancedfile-imports)
-- [Code Chunk](#code-chunkhttpsshd101wyygithubiomarkdown-preview-enhancedcode-chunk)
-- [Presentation](#presentationhttpsshd101wyygithubiomarkdown-preview-enhancedpresentation)
-- [Pandoc](#pandochttpsshd101wyygithubiomarkdown-preview-enhancedpandocidpandoc-parser)
+- [Markdown-preview-enhanced cheat sheet](#markdown-preview-enhanced-cheat-sheet)
+  - [Syntax guide](#syntax-guide)
+    - [Headers](#headers)
+    - [Emphasis](#emphasis)
+    - [List](#list)
+    - [Images](#images)
+    - [Links](#links)
+    - [Blockquote](#blockquote)
+    - [Horizontal Rule](#horizontal-rule)
+    - [Inline code](#inline-code)
+    - [Fenced code block](#fenced-code-block)
+    - [Task lists](#task-lists)
+    - [Tables](#tables)
+  - [Extended syntax](#extended-syntax)
+    - [Table](#table)
+  - [Rowspan `^`](#rowspan)
+    - [Emoji & Font-Awesome](#emoji-font-awesome)
+    - [Superscript](#superscript)
+    - [Subscript](#subscript)
+    - [Footnotes](#footnotes)
+    - [Abbreviation](#abbreviation)
+    - [Mark](#mark)
+    - [CriticMarkup](#criticmarkup)
+    - [Admonition](#admonition)
+  - [Math](#math)
+  - [Diagrams](#diagramshttpsshd101wyygithubiomarkdown-preview-enhanceddiagrams)
+  - [Table of Contents](#table-of-contents)
+  - [File Imports](#file-importshttpsshd101wyygithubiomarkdown-preview-enhancedfile-imports)
+  - [Code Chunk](#code-chunkhttpsshd101wyygithubiomarkdown-preview-enhancedcode-chunk)
+  - [Presentation](#presentationhttpsshd101wyygithubiomarkdown-preview-enhancedpresentation)
+  - [Pandoc](#pandochttpsshd101wyygithubiomarkdown-preview-enhancedpandocidpandoc-parser)
+- [Known Issues](#known-issues)
 
 <!-- /code_chunk_output -->
 
-# Syntax guide
+## Syntax guide
 
-## Headers
+### Headers
 
 ```markdown
 # This is an h1 tag
@@ -71,7 +69,7 @@
 
 ###### This is an h6 tag. It has two classes {.class1 .class2 ignore=true}
 
-## Emphasis
+### Emphasis
 
 ```markdown
 _This text will be italic_
@@ -99,9 +97,9 @@ _You **can** combine them_
 
 ~~This text will be strikethrough~~
 
-## List
+### List
 
-### Unordered List
+#### Unordered List
 
 ```markdown
 - Item 1
@@ -115,7 +113,7 @@ _You **can** combine them_
   - Item 2a
   - Item 2b
 
-### Ordered List
+#### Ordered List
 
 ```markdown
 1. Item 1
@@ -131,7 +129,7 @@ _You **can** combine them_
    1. Item 3a
    1. Item 3b
 
-## Images
+### Images
 
 ```markdown
 ![GitHub Logo](https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg)
@@ -139,7 +137,7 @@ _You **can** combine them_
 
 ![GitHub Logo](https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg)
 
-## Links
+### Links
 
 ```markdown
 [GitHub](https://github.com)
@@ -147,7 +145,7 @@ _You **can** combine them_
 
 [GitHub](https://github.com)
 
-## Blockquote
+### Blockquote
 
 ```markdown
 As Kanye West said:
@@ -161,7 +159,7 @@ As Kanye West said:
 > We're living the future so
 > the present is our past.
 
-## Horizontal Rule
+### Horizontal Rule
 
 ```markdown
 Three or more...
@@ -193,7 +191,7 @@ Asterisks
 
 Underscores
 
-## Inline code
+### Inline code
 
 ```markdown
 I think you should use an
@@ -203,9 +201,9 @@ I think you should use an
 I think you should use an
 `<addr>` element here instead.
 
-## Fenced code block
+### Fenced code block
 
-### Syntax Highlighting
+#### Syntax Highlighting
 
 ````markdown
 ```ruby
@@ -222,7 +220,7 @@ markdown = Redcarpet.new("Hello World!")
 puts markdown.to_html
 ````
 
-### Code block class (MPE extended feature)
+#### Code block class (MPE extended feature)
 
 ````markdown
 ```javascript {.class1 .class}
@@ -239,7 +237,7 @@ function add(x, y) {
 }
 ````
 
-#### line-numbers
+##### line-numbers
 
 ````markdown
 ```javascript {.line-numbers}
@@ -256,7 +254,7 @@ function add(x, y) {
 }
 ````
 
-### highlighting rows
+#### highlighting rows
 
 ````markdown
 ```javascript {highlight=10}
@@ -284,7 +282,7 @@ function add(x, y) {
 
 ```
 
-## Task lists
+### Task lists
 
 ```markdown
 - [x] @mentions, #refs, [links](), **formatting**, and <del>tags</del> supported
@@ -298,7 +296,7 @@ function add(x, y) {
 - [x] this is a complete item
 - [ ] this is an incomplete item
 
-## Tables
+### Tables
 
 ```markdown
 | First Header                | Second Header                |
@@ -312,11 +310,11 @@ function add(x, y) {
 | Content from cell 1         | Content from cell 2          |
 | Content in the first column | Content in the second column |
 
-# Extended syntax
+## Extended syntax
 
-## Table
+### Table
 
-### Colspan `>` or `empty cell`
+#### Colspan `>` or `empty cell`
 
 ```markdown
 | a   | b   |
@@ -330,7 +328,7 @@ function add(x, y) {
 | >   | 1   |
 | 2   |     |
 
-# Rowspan `^`
+## Rowspan `^`
 
 ```markdown
 | a   | b   |
@@ -344,7 +342,7 @@ function add(x, y) {
 | 1   | 2   |
 | ^   | 4   |
 
-## Emoji & Font-Awesome
+### Emoji & Font-Awesome
 
 ```markdown
 :smile:
@@ -354,7 +352,7 @@ function add(x, y) {
 :smile:
 :fa-car:
 
-## Superscript
+### Superscript
 
 ```markdown
 30^th^
@@ -362,7 +360,7 @@ function add(x, y) {
 
 30^th^
 
-## Subscript
+### Subscript
 
 ```markdown
 H~2~O
@@ -370,7 +368,7 @@ H~2~O
 
 H~2~O
 
-## Footnotes
+### Footnotes
 
 ```markdown
 Content [^1]
@@ -382,7 +380,7 @@ Content [^1]
 
 [^1]: Hi! This is a footnote
 
-## Abbreviation
+### Abbreviation
 
 ```markdown
 _[HTML]: Hyper Text Markup Language
@@ -396,7 +394,7 @@ _[W3C]: World Wide Web Consortium
 The HTML specification
 is maintained by the W3C.
 
-## Mark
+### Mark
 
 ```markdown
 ==marked==
@@ -404,7 +402,7 @@ is maintained by the W3C.
 
 ==marked==
 
-## CriticMarkup
+### CriticMarkup
 
 ```markdown
 {++Addition++}
@@ -424,7 +422,7 @@ impossible for God: To find {++any++} sense in any copyright law on the
 planet. {==Truth is stranger than fiction==}{>>true<<}, but it is because
 Fiction is obliged to stick to possibilities; Truth isn’t.
 
-## Admonition
+### Admonition
 
 ```markdown
 !!! note This is the admonition title
@@ -434,7 +432,7 @@ This is the admonition body
 !!! note This is the admonition title
 This is the admonition body
 
-# Math
+## Math
 
 ```markdown
 $f(x) = \sin(x) + 12$
@@ -456,18 +454,22 @@ i\hbar\frac{\partial \psi}{\partial {t}} = \frac{-\hbar^2}{2m}
 \frac{\partial^2}{\partial z^2} \right) \psi + V \psi
 $$
 
-# [Diagrams](https://shd101wyy.github.io/markdown-preview-enhanced/#/diagrams)
+## [Diagrams](https://shd101wyy.github.io/markdown-preview-enhanced/#/diagrams)
 
-# Table of Contents
+## Table of Contents
 
 ```bash
 :CocCommand markdown-preview-enhanced.createTOC
 ```
 
-# [File Imports](https://shd101wyy.github.io/markdown-preview-enhanced/#/file-imports)
+## [File Imports](https://shd101wyy.github.io/markdown-preview-enhanced/#/file-imports)
 
-# [Code Chunk](https://shd101wyy.github.io/markdown-preview-enhanced/#/code-chunk)
+## [Code Chunk](https://shd101wyy.github.io/markdown-preview-enhanced/#/code-chunk)
 
-# [Presentation](https://shd101wyy.github.io/markdown-preview-enhanced/#/presentation)
+## [Presentation](https://shd101wyy.github.io/markdown-preview-enhanced/#/presentation)
 
-# [Pandoc](https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc?id=pandoc-parser)
+## [Pandoc](https://shd101wyy.github.io/markdown-preview-enhanced/#/pandoc?id=pandoc-parser)
+
+# Known Issues
+
+1. [Absolute path not working](https://github.com/weirongxu/coc-markdown-preview-enhanced/issues/11#issuecomment-1072998534).

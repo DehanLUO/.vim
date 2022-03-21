@@ -15,7 +15,7 @@ To Katherine, with Love.
   - [Features](#features)
   - [Q&A](#qa)
     - [Enable italic fonts in iTerms2](#enable-italic-fonts-in-iterms2)
-  - [Usage](#usage)
+  - [Cheat sheet](#cheat-sheet)
 
 <!-- /code_chunk_output -->
 
@@ -106,6 +106,8 @@ To Katherine, with Love.
 
 3. Type **xterm-256color-italic** in `Preferences` > `Profiles` > `Terminal` > `Report Terminal Type:` to active this new term
 
-## Usage
+## Cheat sheet
 
-- [Markdown guide](./doc/markdown-preview-enhanced.md)
+- [Markdown-preview-enhanced](./doc/markdown-preview-enhanced.md)
+
+- [Fugitive.vim](./doc/fugitive.md)
