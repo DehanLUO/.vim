@@ -92,6 +92,20 @@ map <Leader><Down> :res -5<CR>
 map <Leader><Up> :res +5<CR>
 map <LEADER><Right> :vert res+5<CR>
 
+" Move to the previous/next item in the quickfix list
+nm [q :cp<CR>
+nm ]q :cn<CR>
+" Move to the first/last item in the quickfix list
+nm [Q :cfir<CR>
+nm ]Q :cla<CR>
+
+" Move to the previous/next item in the location list
+nm {q :lp<CR>
+nm }q :lne<CR>
+" Move to the first/last item in the location list
+nm {Q :lfir<CR>
+nm }Q :lla<CR>
+
 " First use Ctrl-g to start a new change, as far as undo is concerned
 ino <C-U> <C-G>u<C-U>
 ino <C-W> <C-G>u<C-W>
@@ -528,11 +542,6 @@ let g:airline#extensions#hunks#hunk_symbols=['','שׂ',''] " Set count symb
 " Augment folded text with an indicator of weather lines have been changed
 set fdt=gitgutter#fold#foldtext()
 
-"Stage/undo/preview the hunk
-nm <Leader>ghs :GitGutterStageHunk<CR>
-nm <Leader>ghu :GitGutterUndoHunk<CR>
-nm <Leader>ghp :GitGutterPreviewHunk<CR>
-
 " Fold/execute unchanged lines
 nm <Leader>gf :GitGutterFold<CR>
 
@@ -589,11 +598,25 @@ endf
 let g:airline#extensions#branch#enabled=1
 " Change the text for when no branch is detected
 let g:airline#extensions#branch#empty_message=''
-" define the order in which the branches of different vcs systems will be displayed on the statusline (currently only for fugitive and lawrencium) >
+" Define the order in which the branches of different vcs systems will be displayed on the statusline
 let g:airline#extensions#branch#vcs_priority = ["git", "mercurial"]
+
+" Show git status
+nm <Leader>gs :G!<CR>
+
+" Diff against any and all direct ancentors
+nm <Leader>gd :Gvdiffsplit!<CR>
+
+" Conflicts obtain/put
+nm <expr><silent> coh &diff ? ':diffget //2 \| diffupdate<CR>' : ':<CR>'
+nm <expr><silent> col &diff ? ':diffget //3 \| diffupdate<CR>' : ':<CR>'
+nm <expr><silent> cp &diff ? ':diffput 1 \| diffupdate<CR>' : ':<CR>'
 
 " Run git-blame on the current file
 nm <Leader>gb :Git blame<CR>
+
+" Close all of the windows apart from the working copy
+nm <Leader>gq :only<CR>
 " }}}
 
 " Compile

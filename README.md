@@ -46,6 +46,12 @@ To Katherine, with Love.
 | `r`                     | Compile                                                                               |      vim      |  √   |  -  |  -  |  -  |  -  |
 | `Ctrl`+`u`              | Delete the text you’ve typed in the current line                                      |      vim      |  -   |  -  |  -  |  -  |  √  |
 | `Ctrl`+`w`              | Delete the word before the cursor                                                     |      vim      |  -   |  -  |  -  |  -  |  √  |
+| `\`+`s`+`t`+`w`         | Strip tailing whitespacee                                                             |      vim      |  -   |  -  |  √  |  -  |  -  |
+| `Command`+`[`/`]`       | Emulate shift left/right key commands from MacOS Notes                                |      vim      |  √   |  -  |  √  |  -  |  -  |
+| `[`/`]`+`q`             | Move to the previous/next item in the quickfix list                                   |      vim      |  √   |  -  |  -  |  -  |  -  |
+| `[`/`]`+`Q`             | Move to the first/last item in the quickfix list                                      |      vim      |  √   |  -  |  -  |  -  |  -  |
+| `{`/`}`+`q`             | Move to the previous/next item in the location list                                   |      vim      |  √   |  -  |  -  |  -  |  -  |
+| `{`/`}`+`Q`             | Move to the first/last item in the location list                                      |      vim      |  √   |  -  |  -  |  -  |  -  |
 | `Tab`/`Shift+Tab`       | Trigger completion with characters forward/backward                                   |      coc      |  √   |  √  |  √  |  √  |  -  |
 | `Ctrl+Space`            | Trigger completion                                                                    |      coc      |  √   |  √  |  √  |  √  |  -  |
 | `Enter`                 | Auto-complete after a completion is confirmed                                         |      coc      |  √   |  √  |  √  |  √  |  -  |
@@ -71,9 +77,21 @@ To Katherine, with Love.
 | `Space`+`o`             | Show symbols in the current document                                                  |      coc      |  √   |  -  |  -  |  -  |  -  |
 | `Space`+`s`             | Search workspace symbols                                                              |      coc      |  √   |  -  |  -  |  -  |  -  |
 | `\`+`p`+`c`             | Pick a different color for current document symbol                                    | coc-highlight |  √   |  -  |  -  |  -  |  -  |
-| `\`+`g`+`h`+`s`/`u`/`p` | Stage/Undo/Preview the hunk the cursor is in                                          | vim-gitgutter |  √   |  -  |  -  |  -  |  -  |
 | `\`+`g`+`f`             | Fold all unchanged lines. Excute again to undo                                        | vim-gitgutter |  √   |  -  |  -  |  -  |  -  |
 | `\`+`g`+`q`+`f`         | Load all hunks into the quickfix list                                                 | vim-gitgutter |  √   |  -  |  -  |  -  |  -  |
+| `\`+`g`+`s`             | Open an interactive buffer showing the status of the files in your working directory  | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `c`+`c`                 | [fugitive status] Create a commit                                                     | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `c`+`r`+`c`             | [fugitive status] Revert the commit under the cursor                                  | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `-`                     | [fugitive status] Stage or unstage the file under the cursor                          | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `g`+`q`                 | [fugitive status] Quit the status buffer                                              | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `\`+`g`+`d`             | Diff against any and all direct ancestors, retaining focus on the current window      | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `[`/`]`+`c`             | [fugitive diff/conflict] Jump to the previous/next start of a change                  | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `d`+`o`                 | [fugitive diff] Obtain diff from another buffer to the current buffer                 | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `d`+`p`                 | [fugitive diff] Put diff from another buffer to thr current buffer                    | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `c`+`o`+`h`/`l`         | [fugitive conflict] Obtain the target/merge branch to the working copy                | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `c`+`p`                 | [fugitive conflict] Modify the working copy with the current buffer                   | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `\`+`g`+`b`             | Git blame on the current file                                                         | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
+| `\`+`g`+`q`             | Close all of the windows apart from the working copy                                  | vim-fugitive  |  √   |  -  |  -  |  -  |  -  |
 | Key combination         | Action                                                                                |    Source     | Norm | Sel | Vis | Opr | Ins |
 
 ## Features
