@@ -92,6 +92,20 @@ map <Leader><Down> :res -5<CR>
 map <Leader><Up> :res +5<CR>
 map <LEADER><Right> :vert res+5<CR>
 
+"Switch tabs
+map <D-S-]> gt
+map <D-S-[> gT
+map <D-1> 1gt
+map <D-2> 2gt
+map <D-3> 3gt
+map <D-4> 4gt
+map <D-5> 5gt
+map <D-6> 6gt
+map <D-7> 7gt
+map <D-8> 8gt
+map <D-9> 9gt
+map <D-0> :tablast<CR>
+
 " Move to the previous/next item in the quickfix list
 nm [q :cp<CR>
 nm ]q :cn<CR>
@@ -235,6 +249,7 @@ en
 	Plug 'airblade/vim-gitgutter' " Show git status
 	Plug 'tpope/vim-fugitive' " Show git status
 		Plug 'tpope/vim-rhubarb' " :GBrowse handler
+	Plug 'honza/vim-snippets' " snipMate & UltiSnip Snippets
 
 cal plug#end()
 
@@ -314,23 +329,31 @@ let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
 " Change warning format
 let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
 
-" `<Tab>`/`<S-Tab> for trigger completion with characters ahead and navigate
+" `<Tab>` for 
+" 1. Expand snippets if the inserted text is expandable
+" 2. Characters ahead and navigate
+" 3. Jump inside a snippet
 ino <silent><expr> <Tab>
-	\ pumvisible()?"\<C-n>" :
-	\ <SID>check_back_space()?"\<Tab>" :
-	\ coc#refresh()
+	\ pumvisible()
+	\		? complete_info()["selected"] == "-1"
+	\			? coc#expandable()
+	\				? coc#_select_confirm()
+	\				: "\<C-n>"
+	\			: "\<C-n>"
+	\		: coc#jumpable()
+	\			? "\<C-r>=coc#rpc#request('doKeymap',['snippets-expand-jump',''])\<CR>"
+	\			: "\<Tab>"
+" <S-Tab> for characters backward and navigate
 ino <expr><S-Tab> pumvisible()?"\<C-p>":"\<C-h>"
-fu! s:check_back_space() abort
-	let col = col('.') - 1
-	retu !col || getline('.')[col - 1] =~# '\s'
-endf
 
 " `<c-space>` to trigger completion
 ino <silent><expr> <C-@> coc#refresh()
 
-" `<CR>` auto complete after a completion is confirmed
-ino <silent><expr> <cr> complete_info()["selected"]!="-1"
-	\? coc#_select_confirm():"\<C-g>u\<CR>"
+" `<CR>` to complete after a selection is confirmed
+ino <silent><expr> <cr>
+	\ complete_info()["selected"] != "-1"
+	\		? coc#_select_confirm()
+	\		: "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -444,6 +467,24 @@ let g:markdown_fenced_languages = [
 	\]
 "}}}
 
+" coc-snippets {{{2
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
+" Use <Tab>/<Shift-Tab> for jump to next/previous placeholder in select-mode
+let g:coc_snippet_next='<Tab>'
+let g:coc_snippet_prev = '<S-Tab>'
+"}}}
+
 " coc-pairs {{{2
 " To disable characters for a specified filetypes
 au FileType markdown let b:coc_pairs_disabled = ['`']
@@ -467,6 +508,7 @@ let g:coc_global_extensions=[
 	\ 'coc-markdownlint', 'coc-markdown-preview-enhanced', 'coc-webview',
 	\ 'coc-vimlsp',
 	\ 'coc-json',
+	\ 'coc-snippets',
 	\ 'coc-highlight', 'coc-prettier', 'coc-pairs'
 	\]
 "}}}
@@ -608,15 +650,15 @@ nm <Leader>gs :G!<CR>
 nm <Leader>gd :Gvdiffsplit!<CR>
 
 " Conflicts obtain/put
-nm <expr><silent> coh &diff ? ':diffget //2 \| diffupdate<CR>' : ':<CR>'
-nm <expr><silent> col &diff ? ':diffget //3 \| diffupdate<CR>' : ':<CR>'
-nm <expr><silent> cp &diff ? ':diffput 1 \| diffupdate<CR>' : ':<CR>'
+nm <expr><silent> coh &diff ? ':diffg //2 \| dif<CR>' : ':<CR>'
+nm <expr><silent> col &diff ? ':diffg //3 \| dif<CR>' : ':<CR>'
+nm <expr><silent> cp &diff ? ':diffpu 1 \| dif<CR>' : ':<CR>'
 
 " Run git-blame on the current file
 nm <Leader>gb :Git blame<CR>
 
 " Close all of the windows apart from the working copy
-nm <Leader>gq :only<CR>
+nm <Leader>gq :on<CR>
 " }}}
 
 " Compile
