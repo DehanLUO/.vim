@@ -330,9 +330,9 @@ let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
 let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
 
 " `<Tab>` for 
-" 1. Expand snippets if the inserted text is expandable
+" 1. Expand snippets if inserted text is expandable
 " 2. Characters ahead and navigate
-" 3. Jump inside a snippet
+" 3. Jump to next placeholder inside a snippet
 ino <silent><expr> <Tab>
 	\ pumvisible()
 	\		? complete_info()["selected"] == "-1"
@@ -340,7 +340,7 @@ ino <silent><expr> <Tab>
 	\				? coc#_select_confirm()
 	\				: "\<C-n>"
 	\			: "\<C-n>"
-	\		: coc#jumpable()
+	\		: coc#expandableOrJumpable()
 	\			? "\<C-r>=coc#rpc#request('doKeymap',['snippets-expand-jump',''])\<CR>"
 	\			: "\<Tab>"
 " <S-Tab> for characters backward and navigate
@@ -646,8 +646,8 @@ let g:airline#extensions#branch#vcs_priority = ["git", "mercurial"]
 " Show git status
 nm <Leader>gs :G!<CR>
 
-" Diff against any and all direct ancentors
-nm <Leader>gd :Gvdiffsplit!<CR>
+" Diff against any and all direct ancentors with no foldenable
+nm <Leader>gd :Gvdiffsplit!<CR>zR
 
 " Conflicts obtain/put
 nm <expr><silent> coh &diff ? ':diffg //2 \| dif<CR>' : ':<CR>'
