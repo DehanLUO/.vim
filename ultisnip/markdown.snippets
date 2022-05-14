@@ -1,0 +1,119 @@
+# Ultisnips
+
+############
+#  Basics  #
+############
+
+snippet "h([1-6])" "Headers" br
+`!p
+tag = ""
+for i in range(int(match.group(1))):
+	tag += "#"
+snip.rv = tag
+` ${1:This is an header`!p snip.rv = match.group(1)` tag}
+$0
+endsnippet
+
+snippet // "Comments" b
+<!-- ${1:${VISUAL:comments}} -->
+$0
+endsnippet
+
+snippet listnumbered "Numbered list" b
+1. ${1:Item}
+$0
+endsnippet
+
+snippet listbulleted "Bulleted list" b
+- ${1:Item}
+$0
+endsnippet
+
+snippet img "Image" b
+![${1:Alt Text}](${2:${VISUAL:url}}) $0
+endsnippet
+
+snippet ln "Link"
+[${1:Alt Text}](https://${2:${VISUAL:url}}) $0
+endsnippet
+
+snippet quote "Blockquote" b
+> ${1:${VISUAL:Quotation}}
+$0
+endsnippet
+
+snippet divider "Visually divide blocks" b
+---
+
+$0
+endsnippet
+
+snippet code "Capture a code snippet" b
+\`\`\`${1:languate} `!p snip.rv = "{" if t[2] else ""`${2:.line-numbers}`!p snip.rv = "}" if t[2] else ""`
+${0:${VISUAL}}
+\`\`\`
+endsnippet
+
+snippet todo "Track tasks with a to-do list" b
+- [${1:x}]
+$0
+endsnippet
+
+#####################
+#  Extended syntax  #
+#####################
+
+snippet prettierIgnore "Prettier ignore" b
+<!-- prettier-ignore -->
+$0
+endsnippet
+
+snippet fn "Footnotes"
+${1:${VISUAL:Content}} [^${2:tag}]
+
+[^$2]: ${3:This is a footnote.}
+endsnippet
+
+snippet abrv "Abbreviation" b
+<!-- prettier-ignore -->
+*[${1:Keyword}]: ${2:Abbreviation}
+$0
+endsnippet
+
+snippet admonition "Admonition" b
+!!! ${1:Admonition}
+$0
+endsnippet
+
+snippet toc "Table of content" b
+<!-- @import "[TOC]" {cmd="toc" depthFrom=${1:1} depthTo=${2:3} orderedList=${3:false}} -->
+
+<!-- code_chunk_output -->
+
+<!-- /code_chunk_output -->
+
+$0
+endsnippet
+
+########
+# Math #
+########
+
+snippet sympy "math block " w
+sympy $1 sympy$0
+endsnippet
+
+priority 10000
+snippet 'sympy\ (.*)\ sympy' "evaluate sympy" wr
+`!p
+from sympy import *
+x, y, z, t = symbols('x y z t')
+k, m, n = symbols('k m n', integer=True)
+f, g, h = symbols('f g h', cls=Function)
+init_printing()
+snip.rv = eval('latex(' + match.group(1).replace('\\', '') \
+    .replace('^', '**') \
+    .replace('{', '(') \
+    .replace('}', ')') + ')')
+`
+endsnippet

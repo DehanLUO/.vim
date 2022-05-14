@@ -60,10 +60,9 @@
 	"json.enable": true,
 	"json.format.enable": true,
 	//coc-snippets
-	"snippets.ultisnips.directories": [
-		"$HOME/.vim/ultrisnips/",
-		"$HOME/.vim/plugged/vim-snippets/UltiSnips/"
-	],
+	"snippets.ultisnips.directories": [],
+	"snippets.ultisnips.enable": true,
+	"snippets.snipmate.enable": true,
 	//coc-prettier
 	"prettier.bracketSpacing": true,
 	"prettier.disableLanguages": [

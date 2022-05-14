@@ -1,0 +1,35 @@
+# snipmate
+
+############
+#  Basics  #
+############
+
+# italics
+snippet *
+	*${1:`@+`}* $2
+# bold
+snippet **
+	**${1:`@+`}** $2
+# bold italics
+snippet ***
+	***${1:`@+`}*** $2
+# strikethrough
+snippet ~~
+	~~${1:`@+`}~~ $2
+# inline code
+snippet `
+	\`$1\` $2
+
+##########
+#  Math  #
+##########
+
+# inline math
+snippet $
+	$${1:`@+`}$ $2
+# math block
+snippet $$
+	$$
+	${1:`@+`}
+	$$
+	$2

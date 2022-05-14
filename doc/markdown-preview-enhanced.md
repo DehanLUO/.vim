@@ -1,4 +1,4 @@
-# Markdown-preview-enhanced cheat sheet
+# [Markdown-preview-enhanced cheat sheet](https://shd101wyy.github.io/markdown-preview-enhanced/#/)
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=3 orderedList=false} -->
 
@@ -71,27 +71,32 @@
 
 ### Emphasis
 
+<!-- prettier-ignore -->
 ```markdown
-_This text will be italic_
+*This text will be italic*
 
-This will also be italic\_
+_This will also be italic_
 
 **This text will be bold**
 
-**This will also be bold**
+__This will also be bold__
 
 _You **can** combine them_
 
 ~~This text will be strikethrough~~
 ```
 
-_This text will be italic_
+<!-- prettier-ignore -->
+*This text will be italic*
 
-This will also be italic\_
+<!-- prettier-ignore -->
+_This will also be italic_
 
+<!-- prettier-ignore -->
 **This text will be bold**
 
-**This will also be bold**
+<!-- prettier-ignore -->
+__This will also be bold__
 
 _You **can** combine them_
 
@@ -161,6 +166,7 @@ As Kanye West said:
 
 ### Horizontal Rule
 
+<!-- prettier-ignore -->
 ```markdown
 Three or more...
 
@@ -168,11 +174,11 @@ Three or more...
 
 Hyphens
 
----
+***
 
 Asterisks
 
----
+___
 
 Underscores
 ```
@@ -183,11 +189,13 @@ Three or more...
 
 Hyphens
 
----
+<!-- prettier-ignore -->
+***
 
 Asterisks
 
----
+<!-- prettier-ignore -->
+___
 
 Underscores
 
@@ -382,15 +390,17 @@ Content [^1]
 
 ### Abbreviation
 
+<!-- prettier-ignore -->
 ```markdown
-_[HTML]: Hyper Text Markup Language
-_[W3C]: World Wide Web Consortium
+*[HTML]: Hyper Text Markup Language
+*[W3C]: World Wide Web Consortium
 The HTML specification
 is maintained by the W3C.
 ```
 
-_[HTML]: Hyper Text Markup Language
-_[W3C]: World Wide Web Consortium
+<!-- prettier-ignore -->
+*[HTML]: Hyper Text Markup Language
+*[W3C]: World Wide Web Consortium
 The HTML specification
 is maintained by the W3C.
 

@@ -124,6 +124,30 @@ To Katherine, with Love.
 
 3. Type **xterm-256color-italic** in `Preferences` > `Profiles` > `Terminal` > `Report Terminal Type:` to active this new term
 
+### Install MacTex
+
+```shell
+brew install --cask mactex
+```
+
+### Snippets
+
+```shell
+pip3 install sympy
+pip3 install python-dateutil
+```
+
+### LaTeX
+
+```shell
+brew tap zegervdv/zathura
+brew install zathura --with-synctex --HEAD
+brew install zathura-pdf-poppler
+
+mkdir -p $(brew --prefix zathura)/lib/zathura
+ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+```
+
 ## Cheat sheet
 
 - [Markdown-preview-enhanced](./doc/markdown-preview-enhanced.md)

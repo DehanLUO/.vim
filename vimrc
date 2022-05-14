@@ -164,13 +164,13 @@ com DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
 " Set Diff command
 com Diff difft | winc p | difft
 
-" sisual
+" Visual
 set syn=on " Set syntax highlighting on
 
 set ts=2 " Number of space that a <Tab> in the file counts for
 set sts=2 " Number of spaces that a <Tab> counts for while performing editing
 set sw=2 " Number of space use for each step of (auto)indent
-"set et " Use appropriate number of spaces to insert a <Tab>
+au FileType tex setlocal et " Use appropriate number of spaces to insert a <Tab>
 
 set nu " Print the line number in front of each line
 set rnu " Show the line number relative to the cursor in front of each line
@@ -184,7 +184,7 @@ set tf " Indicates a fast termianl connection
 
 " Show <Tab>, useful to see the difference between tabs and spaces
 set list
-set lcs=tab:>-,trail:-,nbsp:%,eol:< " Strings to use in 'list' mode
+set lcs=tab:>-,trail:-,nbsp:%,eol:<,space:· " Strings to use in 'list' mode
 
 " Set fonts for gVim
 if has('win32')&&has('gui_running')
@@ -249,7 +249,8 @@ en
 	Plug 'airblade/vim-gitgutter' " Show git status
 	Plug 'tpope/vim-fugitive' " Show git status
 		Plug 'tpope/vim-rhubarb' " :GBrowse handler
-	Plug 'honza/vim-snippets' " snipMate & UltiSnip Snippets
+	Plug 'SirVer/ultisnips' " Ultimate solution for snipets
+	Plug 'lervag/vimtex' " LaTeX
 
 cal plug#end()
 
@@ -329,31 +330,8 @@ let airline#extensions#coc#stl_format_err='%E{[%e(#%fe)]}'
 " Change warning format
 let airline#extensions#coc#stl_format_warn='%W{[%w(#%fw)]}'
 
-" `<Tab>` for 
-" 1. Expand snippets if inserted text is expandable
-" 2. Characters ahead and navigate
-" 3. Jump to next placeholder inside a snippet
-ino <silent><expr> <Tab>
-	\ pumvisible()
-	\		? complete_info()["selected"] == "-1"
-	\			? coc#expandable()
-	\				? coc#_select_confirm()
-	\				: "\<C-n>"
-	\			: "\<C-n>"
-	\		: coc#expandableOrJumpable()
-	\			? "\<C-r>=coc#rpc#request('doKeymap',['snippets-expand-jump',''])\<CR>"
-	\			: "\<Tab>"
-" <S-Tab> for characters backward and navigate
-ino <expr><S-Tab> pumvisible()?"\<C-p>":"\<C-h>"
-
 " `<c-space>` to trigger completion
 ino <silent><expr> <C-@> coc#refresh()
-
-" `<CR>` to complete after a selection is confirmed
-ino <silent><expr> <cr>
-	\ complete_info()["selected"] != "-1"
-	\		? coc#_select_confirm()
-	\		: "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -480,9 +458,11 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x  <Plug>(coc-convert-snippet)
 
-" Use <Tab>/<Shift-Tab> for jump to next/previous placeholder in select-mode
-let g:coc_snippet_next='<Tab>'
-let g:coc_snippet_prev = '<S-Tab>'
+" Disable default jump-keys provided by coc-nvim
+let g:coc_snippet_next='<Nop>'
+let g:coc_snippet_prev = '<Nop>'
+
+imap <C-z> <Plug>(coc-snippets-select)
 "}}}
 
 " coc-pairs {{{2
@@ -509,6 +489,7 @@ let g:coc_global_extensions=[
 	\ 'coc-vimlsp',
 	\ 'coc-json',
 	\ 'coc-snippets',
+	\ 'coc-vimtex',
 	\ 'coc-highlight', 'coc-prettier', 'coc-pairs'
 	\]
 "}}}
@@ -661,6 +642,213 @@ nm <Leader>gb :Git blame<CR>
 nm <Leader>gq :on<CR>
 " }}}
 
+" PlugCfg 'SirVer/ultisnips' :help UltiSnips.txt {{{1
+" 
+let g:UltiSnipsSnippetDirectories=["ultisnip"]
+
+" Disable default trigger configuration, jump keys provided by UltiSnips
+let g:UltiSnipsExpandTrigger="<Nop>"
+let g:UltiSnipsJumpForwardTrigger="<Nop>"
+let g:UltiSnipsJumpBackwardTrigger="<Nop>"
+
+let g:UltiSnipsEnableSnipMate=0 " Disable looking for SnipMate snippets
+
+" `<Esc>` to exit PumList then insert mode
+ino <silent><expr> <Esc>
+	\ pumvisible()
+	\		? "\<Left>\<Right>"
+	\		: "\<Esc>"
+
+" `<Tab>` tries to expand a ultisnips-snippet via Ultisnips when nothing in
+" the PumList is selected. For not expanding, it expands SnipMate-snippet via
+" coc-snippets. For not expanding again, it checks for PumList and if shown,
+" characters ahead and navigate. If there is no PumList, jump to next
+" placeholder via Ultisnips then coc-snippets. If there is no placeholder, it
+" just return TAB key.
+ino <silent><expr> <Tab>
+	\ complete_info()["selected"] == "-1"
+	\	 ? UltiSnips#CanExpandSnippet()
+	\		 ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
+	\		 : coc#expandable()
+	\			 ? "\<C-r>=coc#rpc#request('doKeymap',['snippets-expand',''])\<CR>"
+	\			 : pumvisible()
+	\				 ? "\<C-n>"
+	\				 : UltiSnips#CanJumpForwards()
+	\					 ? "\<C-r>=UltiSnips#JumpForwards()<CR>" 
+	\					 : coc#jumpable()
+	\						 ? "\<C-r>=coc#rpc#request('doKeymap',['snippets-expand-jump',''])\<CR>"
+	\						 : "\<Tab>"
+	\	 : pumvisible()
+	\		 ? "\<C-n>"
+	\		 : "\<Tab>"
+ino <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+ino <silent><expr> <Up>    pumvisible() ? "\<C-p>" : "\<Up>"
+ino <silent><expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
+
+" To jump forward and backward in select-mode
+snor <silent> <Tab> <Esc>
+	\ :call UltiSnips#JumpForwards()<cr>
+	\ :call coc#rpc#request('snippetNext', [])<cr>
+snor <silent> <S-Tab> <Esc>
+	\ :call UltiSnips#JumpBackwards()<cr>
+	\ :call coc#rpc#request('snippetPrev', [])<cr>
+
+" `<CR>` to complete after a selection is confirmed
+ino <silent><expr> <cr>
+	\ complete_info()["selected"] != "-1"
+	\		? UltiSnips#CanExpandSnippet()
+	\			? "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
+	\			: coc#_select_confirm()
+	\		: "\<C-g>u\<CR>"
+" }}}
+
+" PlugCfg 'lervag/vimtex' :help vimtex.txt {{{1
+" +clientserver is necessary for backward search from PDF viewer to Vim
+if empty(v:servername) && exists('*remote_startserver')
+	call remote_startserver('VIM')
+en
+
+let g:tex_flavor="latex" " Find the difference between latex and plaintex
+let g:vimtex_view_method='zathura' " PDF display in zathura
+
+set cole=1 " Each block of concealed text is replaced with one character
+let g:tex_conceal='abdmg'
+
+let g:tex_fold_enabled=0
+let g:vimtex_fold_enabled=1
+let g:vimtex_fold_types={
+	\ 'preamble':{
+	\		'enabled':1
+	\ },
+	\ 'comments':{
+	\		'enabled':1
+	\ },
+	\ 'envs':{
+	\		'blacklist':[
+	\		],
+	\		'whitelist':[
+	\		],
+	\ },
+	\ 'env_options':{
+	\ },
+	\ 'markers':{
+	\ },
+	\ 'sections':{
+	\		'parse_levels':1,
+	\		'sections':[
+	\			'part',
+	\			'chapter',
+	\			'section',
+	\			'subsection',
+	\		],
+	\		'parts':[
+	\			'appendix',
+	\			'frontmatter',
+	\			'mainmatter',
+	\			'backmatter',
+	\		],
+	\ }
+	\}
+let g:vimtex_fold_manual=1
+
+let g:tex_fold_override_foldtext=1 " Allow special package to fold
+
+" Customize which LaTeX environmets to fold
+"let g:tex_fold_additional_envs=[
+"	\ 'largebox',
+"	\ 'enumerate',
+"	\ 'table',
+"	\ 'tabular',
+"	\ 'tikz',
+"	\ 'exr',
+"	\ 'overlay',
+"	\ 'cd',
+"	\ 'verbatim',
+"	\ 'comment',
+"	\ 'environmet',
+"	\ 'center',
+"	\ 'solution',
+"	\ 'question',
+"	\ 'minipage',
+"	\ 'exm',
+"	\ 'rmk',
+"	\ 'defn',
+"	\ 'clm',
+"	\ 'eq',
+"	\ 'gather',
+"	\ 'align',
+"	\ 'figure',
+"	\ 'subfighre',
+"	\ 'table',
+"	\ 'thebibliography',
+"	\ 'keywords',
+"	\ 'abstract',
+"	\ 'titlepage',
+"	\ 'exr',
+"	\ 'Proof',
+"	\ 'proof',
+"	\ 'sol',
+"	\ 'feynman',
+"	\ 'matrix',
+"	\ 'pmat',
+"	\ 'bmat'
+"	\]
+"let g:Tex_FoldedSections='
+"	\ bibliography,
+"	\ part,
+"	\ chapter,
+"	\ section,
+"	\ subsection,
+"	\ subsubsection,
+"	\ paragraph,
+"	\ solution,
+"	\ feyman
+"	\'
+
+" Setup for syncing with pdfviewer
+" XeLaTeX:
+	" \ '-xelatex',
+" LuaLaTex:
+	" \ '-lualatex',
+" PDFLaTeX:
+	" \ '-pdf',
+let g:vimtex_compiler_latexmk={
+	\	'build_dir':'',
+	\	'callback':1,
+	\	'continuous':1,
+	\	'executable':'latexmk',
+	\	'hooks':[],
+	\	'options':[
+	\		'-verbose',
+	\		'-file-line-error',
+	\		'-synctex=1',
+	\		'-interaction=nonstopmode',
+	\	],
+	\}
+
+let g:vimtex_compiler_latexmk_engines = {
+	\ '_':'-pdf',
+	\ 'pdfdvi':'-pdfdvi',
+	\ 'pdfps':'-pdfps',
+	\ 'pdflatex':'-pdf',
+	\ 'luatex':'-lualatex',
+	\ 'lualatex':'-lualatex',
+	\ 'xelatex':'-xelatex',
+	\ 'context (pdftex)':'-pdf -pdflatex=texexec',
+	\ 'context (luatex)':'-pdf -pdflatex=context',
+	\ 'context (xetex)':'-pdf -pdflatex=''texexec --xtx''',
+	\}
+
+set spell " Spell check, <z-g> over selected word to add/remove from dict
+set spl=en_ca
+" <c-p> to guess for the most recent mistake
+ino <c-p> <c-g>u<Esc>[s1z=`]a<c-g>u
+
+" Define environments which will contain underscores etc to prevent error hi
+au filetype tex syntax region texRefZone start='\\cref{' end='}'
+au filetype tex syntax region texRefZone start='\\Cref{' end='}'
+" }}}
+
 " Compile
 nm r :call Compile()<CR>
 func! Compile()
@@ -668,6 +856,8 @@ func! Compile()
 	exec "w"
 	if &filetype == 'markdown'
 		exec "CocCommand markdown-preview-enhanced.openPreview"
+	elsei &filetype == 'tex'
+		exec vimtex#compiler#compile()
 	en
 	let s:FuncNotRunning=1
 endf
