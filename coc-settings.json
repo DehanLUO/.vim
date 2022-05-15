@@ -63,6 +63,7 @@
 	"snippets.ultisnips.directories": [],
 	"snippets.ultisnips.enable": true,
 	"snippets.snipmate.enable": true,
+	"snippets.autoTrigger": false,
 	//coc-prettier
 	"prettier.bracketSpacing": true,
 	"prettier.disableLanguages": [
