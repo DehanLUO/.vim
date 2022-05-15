@@ -1,10 +1,60 @@
 # Ultisnips
 
+global !p
+# A overkill(dirty) table with automatic alignment feature
+def create_table(snip):
+	# retrieving single line from current string and treat it like tabstops count
+	placeholders_string = snip.buffer[snip.line].strip()
+	rows_amount = int(placeholders_string[0])
+	columns_amount = int(placeholders_string[1])
+
+	prefix_str = "from vimsnippets import display_width;"
+
+	# erase current line
+	snip.buffer[snip.line] = ""
+
+	# create anonymous snippet with expected content and number of tabstops
+	anon_snippet_title = "| "
+	anon_snippet_delimiter = "|"
+	for col in range(1, columns_amount+1):
+		sync_rows = [x*columns_amount+col for x in range(rows_amount+1)]
+		sync_str = ",".join(["t[{0}]".format(x) for x in sync_rows])
+		max_width_str = "max(list(map(display_width, [" + sync_str + "])))"
+		cur_width_str = "display_width(t[" + str(col) + "])"
+		rv_val = "(" + max_width_str + "-" + cur_width_str + ")*' '"
+		anon_snippet_title += "${" + str(col)  + ":head" + str(col)\
+			+ "}`!p " + prefix_str + "snip.rv=" + rv_val + "` | "
+		anon_snippet_delimiter += ":`!p " + prefix_str + "snip.rv = "\
+			+ max_width_str + "*'-'" + "`-|"
+	anon_snippet_title += "\n"
+	anon_snippet_delimiter += "\n"
+
+	anon_snippet_body = ""
+	for row in range(1, rows_amount+1):
+		body_row = "| "
+		for col in range(1, columns_amount+1):
+			sync_rows = [x*columns_amount+col for x in range(rows_amount+1)]
+			sync_str = ",".join(["t[{0}]".format(x) for x in sync_rows])
+			max_width_str = "max(list(map(display_width, [" + sync_str + "])))"
+			cur_width_str = "display_width(t[" + str(row*columns_amount+col) + "])"
+			rv_val = "(" + max_width_str + "-" + cur_width_str + ")*' '"
+			placeholder = "R{0}C{1}".format(row, col)
+			body_row += "${" + str(row*columns_amount+col)  + ":" + placeholder\
+				+ "}`!p " + prefix_str + "snip.rv=" + rv_val + "` | "
+		body_row += "\n"
+		anon_snippet_body += body_row
+
+	anon_snippet_table = anon_snippet_title + anon_snippet_delimiter + anon_snippet_body
+
+	# expand anonymous snippet
+	snip.expand_anon(anon_snippet_table)
+endglobal
+
 ############
 #  Basics  #
 ############
 
-snippet "h([1-6])" "Headers" br
+snippet "h([1-6])" "Headers" brA
 `!p
 tag = ""
 for i in range(int(match.group(1))):
@@ -14,22 +64,22 @@ snip.rv = tag
 $0
 endsnippet
 
-snippet // "Comments" b
+snippet // "Comments" bA
 <!-- ${1:${VISUAL:comments}} -->
 $0
 endsnippet
 
-snippet listnumbered "Numbered list" b
+snippet listnumbered "Numbered list" bA
 1. ${1:Item}
 $0
 endsnippet
 
-snippet listbulleted "Bulleted list" b
+snippet listbulleted "Bulleted list" bA
 - ${1:Item}
 $0
 endsnippet
 
-snippet img "Image" b
+snippet img "Image" bA
 ![${1:Alt Text}](${2:${VISUAL:url}}) $0
 endsnippet
 
@@ -37,33 +87,38 @@ snippet ln "Link"
 [${1:Alt Text}](https://${2:${VISUAL:url}}) $0
 endsnippet
 
-snippet quote "Blockquote" b
+snippet quote "Blockquote" bA
 > ${1:${VISUAL:Quotation}}
 $0
 endsnippet
 
-snippet divider "Visually divide blocks" b
+snippet divider "Visually divide blocks" bA
 ---
 
 $0
 endsnippet
 
-snippet code "Capture a code snippet" b
+snippet code "Capture a code snippet" bA
 \`\`\`${1:languate} `!p snip.rv = "{" if t[2] else ""`${2:.line-numbers}`!p snip.rv = "}" if t[2] else ""`
 ${0:${VISUAL}}
 \`\`\`
 endsnippet
 
-snippet todo "Track tasks with a to-do list" b
+snippet todo "Track tasks with a to-do list" bA
 - [${1:x}]
 $0
+endsnippet
+
+post_jump "create_table(snip)"
+snippet "tb([1-9][1-9])" "Fancy table" br
+`!p snip.rv = match.group(1)`
 endsnippet
 
 #####################
 #  Extended syntax  #
 #####################
 
-snippet prettierIgnore "Prettier ignore" b
+snippet prettierIgnore "Prettier ignore" bA
 <!-- prettier-ignore -->
 $0
 endsnippet
@@ -74,7 +129,7 @@ ${1:${VISUAL:Content}} [^${2:tag}]
 [^$2]: ${3:This is a footnote.}
 endsnippet
 
-snippet abrv "Abbreviation" b
+snippet abrv "Abbreviation" bA
 <!-- prettier-ignore -->
 *[${1:Keyword}]: ${2:Abbreviation}
 $0
@@ -117,3 +172,4 @@ snip.rv = eval('latex(' + match.group(1).replace('\\', '') \
     .replace('}', ')') + ')')
 `
 endsnippet
+

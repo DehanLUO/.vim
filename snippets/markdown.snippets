@@ -6,19 +6,19 @@
 
 # italics
 snippet *
-	*${1:`@+`}* $2
+	*${1:`@+`}* ${0}
 # bold
 snippet **
-	**${1:`@+`}** $2
+	**${1:`@+`}** ${0}
 # bold italics
 snippet ***
-	***${1:`@+`}*** $2
+	***${1:`@+`}*** ${0}
 # strikethrough
 snippet ~~
-	~~${1:`@+`}~~ $2
+	~~${1:`@+`}~~ ${0}
 # inline code
 snippet `
-	\`$1\` $2
+	\`$1\` ${0}
 
 ##########
 #  Math  #
@@ -26,10 +26,10 @@ snippet `
 
 # inline math
 snippet $
-	$${1:`@+`}$ $2
+	$${1:`@+`}$ ${0}
 # math block
 snippet $$
 	$$
 	${1:`@+`}
 	$$
-	$2
+	${0}
