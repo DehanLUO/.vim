@@ -490,6 +490,7 @@ let g:coc_global_extensions=[
 	\ 'coc-json',
 	\ 'coc-snippets',
 	\ 'coc-vimtex',
+	\ 'coc-clangd',
 	\ 'coc-highlight', 'coc-prettier', 'coc-pairs'
 	\]
 "}}}
@@ -643,7 +644,6 @@ nm <Leader>gq :on<CR>
 " }}}
 
 " PlugCfg 'SirVer/ultisnips' :help UltiSnips.txt {{{1
-" 
 let g:UltiSnipsSnippetDirectories=["ultisnip"]
 
 " Disable default trigger configuration, jump keys provided by UltiSnips
@@ -687,19 +687,25 @@ ino <silent><expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
 
 " To jump forward and backward in select-mode
 snor <silent> <Tab> <Esc>
-	\ :call UltiSnips#JumpForwards()<cr>
-	\ :call coc#rpc#request('snippetNext', [])<cr>
+	\ :call UltiSnips#JumpForwards()<CR>
+	\ :call coc#rpc#request('snippetNext', [])<CR>
 snor <silent> <S-Tab> <Esc>
-	\ :call UltiSnips#JumpBackwards()<cr>
-	\ :call coc#rpc#request('snippetPrev', [])<cr>
+	\ :call UltiSnips#JumpBackwards()<CR>
+	\ :call coc#rpc#request('snippetPrev', [])<CR>
+
+" To expand a placeholder, ${VISUAL}, with the text selected in visual-mode
+xn <silent> <Tab> :call UltiSnips#SaveLastVisualSelection()<cr>gvs
 
 " `<CR>` to complete after a selection is confirmed
-ino <silent><expr> <cr>
+ino <silent><expr> <CR>
 	\ complete_info()["selected"] != "-1"
 	\		? UltiSnips#CanExpandSnippet()
 	\			? "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
 	\			: coc#_select_confirm()
 	\		: "\<C-g>u\<CR>"
+
+" `<F5>` to reload changes to snippets
+noremap <silent> <F5> :call UltiSnips#RefreshSnippets()<CR>
 " }}}
 
 " PlugCfg 'lervag/vimtex' :help vimtex.txt {{{1
@@ -813,17 +819,17 @@ let g:tex_fold_override_foldtext=1 " Allow special package to fold
 " PDFLaTeX:
 	" \ '-pdf',
 let g:vimtex_compiler_latexmk={
-	\	'build_dir':'',
-	\	'callback':1,
-	\	'continuous':1,
-	\	'executable':'latexmk',
-	\	'hooks':[],
-	\	'options':[
-	\		'-verbose',
-	\		'-file-line-error',
-	\		'-synctex=1',
-	\		'-interaction=nonstopmode',
-	\	],
+	\ 'build_dir':'',
+	\ 'callback':1,
+	\ 'continuous':1,
+	\ 'executable':'latexmk',
+	\ 'hooks':[],
+	\ 'options':[
+	\	 '-verbose',
+	\	 '-file-line-error',
+	\	 '-synctex=1',
+	\	 '-interaction=nonstopmode',
+	\ ],
 	\}
 
 let g:vimtex_compiler_latexmk_engines = {

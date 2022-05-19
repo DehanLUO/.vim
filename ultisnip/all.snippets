@@ -27,3 +27,36 @@ snippet box# "A nice box with #" b
 
 $0
 endsnippet
+
+###############
+# Date & Time #
+###############
+
+snippet Date "Date" w
+`!p
+from datetime import datetime, timezone
+from dateutil.tz import tzlocal
+now = datetime.now(tzlocal())
+
+weekTable = ["Sun.", "Mon.", "Tues.", "Wed.", "Thur.", "Fri.", "Sat."]
+week = weekTable[int(now.strftime("%w"))]
+
+monthTable = ["Jan.", "Feb.", "Mar.", "Apr.", "May.", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "De."]
+month = monthTable[int(now.strftime("%m")) - 1]
+
+day = now.strftime("%e")
+st = ["1", "21", "31"]
+nd = ["2", "22"]
+rd = ["3", "13", "23"]
+if day in st:
+	day = day + "st"
+elif day in nd:
+	day = day + "nd"
+elif day in rd:
+	day = day + "rd"
+else:
+	day = day + "th"
+
+snip.rv = week + ", " + month + " " + day + now.strftime(" %Y, %H:%M:%S %Z")`
+endsnippet
+

@@ -6,7 +6,7 @@
 		"json",
 		"markdown"
 	],
-	"http.proxy": "http://127.0.0.1:10808",
+	"http.proxy": "http://127.0.0.1:6152",
 	"list.source.extensions.defaultOptions": [
 		"--number-select"
 	],
